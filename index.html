@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login</title>
+    <script>
+        function submitEnrollmentNo() {
+            const enrollmentNo = document.getElementById("enrollmentNo").value;
+            if (enrollmentNo) {
+                // Store the enrollment number in local storage
+                localStorage.setItem("enrollmentNo", enrollmentNo);
+                // Redirect to the result page
+                window.location.href = "result.html";
+            } else {
+                alert("Please enter your Enrollment No.");
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Enter Enrollment No.</h1>
+    <input type="text" id="enrollmentNo" placeholder="Enter Enrollment No.">
+    <button onclick="submitEnrollmentNo()">Submit</button>
+</body>
+</html>
