@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Information</title>
+    <script>
+        async function fetchStudentInfo() {
+            const enrollmentNo = localStorage.getItem("enrollmentNo");
+            if (!enrollmentNo) {
+                alert("No Enrollment No. found. Redirecting to login page.");
+                window.location.href = "index.html";
+                return;
+            }
+            
+            const response = await fetch(`https://script.google.com/macros/s/AKfycbzm4aIqzR9l4Qq5iEcmsJRevri_npkziWPwWD0f0uT3ulUpbRyeCLSlleqYpEe5OeNU/exec?enrollmentNo=${enrollmentNo}`);
+            const studentData = await response.json();
+
+            const resultDiv = document.getElementById("result");
+            resultDiv.innerHTML = ""; // Clear previous results
+
+            if (Object.keys(studentData).length > 0) {
+                for (const [key, value] of Object.entries(studentData)) {
+                    const p = document.createElement("p");
+                    p.textContent = `${key}: ${value}`;
+                    resultDiv.appendChild(p);
+                }
+            } else {
+                resultDiv.innerHTML = `<p>No student found with Enrollment No: ${enrollmentNo}</p>`;
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem("enrollmentNo");
+            window.location.href = "index.html";
+        }
+
+        window.onload = fetchStudentInfo;
+    </script>
+</head>
+<body>
+    <button onclick="logout()">Logout</button>
+    <div id="result"></div>
+</body>
+</html>
