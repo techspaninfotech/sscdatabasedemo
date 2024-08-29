@@ -5,22 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Login</title>
     <script>
-        function submitEnrollmentNo() {
+        async function submitEnrollmentNo() {
             const enrollmentNo = document.getElementById("enrollmentNo").value;
-            if (enrollmentNo) {
-                // Store the enrollment number in local storage
-                localStorage.setItem("enrollmentNo", enrollmentNo);
-                // Redirect to the result page
-                window.location.href = "result.html";
+            const password = document.getElementById("password").value;
+
+            if (enrollmentNo && password) {
+                const response = await fetch(`https://script.google.com/macros/s/AKfycbzZ2W3T8ZNAZepGsNvd0z5XQYDf46nUYUyPUEFQIdvQOfjfTeph9U9GrRG9kYaLQPTx/exec?enrollmentNo=${enrollmentNo}&password=${password}`);
+                const studentData = await response.json();
+
+                if (studentData.valid) {
+                    // Store the enrollment number and password in local storage
+                    localStorage.setItem("enrollmentNo", enrollmentNo);
+                    localStorage.setItem("password", password);
+                    // Redirect to the result page
+                    window.location.href = "result.html";
+                } else {
+                    document.getElementById("message").textContent = "Invalid credentials. Please try again.";
+                }
             } else {
-                alert("Please enter your Enrollment No.");
+                alert("Please enter both Enrollment No. and Password.");
             }
         }
     </script>
 </head>
 <body>
-    <h1>Enter Enrollment No.</h1>
+    <h1>Student Login</h1>
     <input type="text" id="enrollmentNo" placeholder="Enter Enrollment No.">
+    <input type="password" id="password" placeholder="Enter Password">
     <button onclick="submitEnrollmentNo()">Submit</button>
+    <p id="message" style="color:red;"></p>
 </body>
 </html>
+
